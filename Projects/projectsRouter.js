@@ -51,4 +51,21 @@ router.delete('/:id', (req, res) => {
     })
 })
 
+router.put('/:id', (req, res) => {
+  const { id } = req.params
+
+  projectsDb.update(id, req.body)
+    .then(updatedProject => {
+      res.status(200).json({
+        updatedProject
+      })
+    })
+    .catch(error => {
+      console.log(error)
+      res.status(500).json({
+        error: 'Could not make modifications to project in the database'
+      })
+    })
+})
+
 module.exports = router
