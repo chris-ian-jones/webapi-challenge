@@ -34,7 +34,7 @@ router.post('/', (req, res) => {
     })
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateProjectId, (req, res) => {
   const { id } = req.params
 
   projectsDb.get(id)
@@ -51,7 +51,7 @@ router.get('/:id', (req, res) => {
     })
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateProjectId, (req, res) => {
   const { id } = req.params
 
   projectsDb.remove(id)
@@ -68,7 +68,7 @@ router.delete('/:id', (req, res) => {
     })
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateProjectId, (req, res) => {
   const { id } = req.params
 
   projectsDb.update(id, req.body)
@@ -85,7 +85,7 @@ router.put('/:id', (req, res) => {
     })
 })
 
-router.get('/:id/actions', (req, res) => {
+router.get('/:id/actions', validateProjectId, (req, res) => {
   const { id } = req.params
 
   projectsDb.getProjectActions(id)
@@ -100,5 +100,22 @@ router.get('/:id/actions', (req, res) => {
       })
     })
 })
+
+// custom middleware to validate project_id
+function validateProjectId(req, res, next) {
+  const { id } = req.params
+
+  projectsDb.get(id)
+    .then(project => {
+      if (!project) {
+        res.status(400).json({
+          message: 'Invalid Project ID'
+        })
+      } else {
+        next()
+      }
+    })
+}
+
 
 module.exports = router
