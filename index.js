@@ -17,7 +17,11 @@ const express = require('express')
 
 const server = express()
 
+const projectsRoutes = require('./Projects/projectsRouter.js')
+
 server.use(express.json())
+
+server.use('/api/projects', projectsRoutes)
 
 server.use('/', (req, res) => res.send('API is up...'))
 
