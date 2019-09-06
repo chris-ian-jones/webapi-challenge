@@ -3,6 +3,7 @@ const express = require('express')
 const router = express.Router()
 
 actionsDb = require('./../data/helpers/actionModel.js')
+projectsDb = require('./../data/helpers/projectModel.js')
 
 router.get('/', (req, res) => {
   actionsDb.get()
@@ -19,7 +20,7 @@ router.get('/', (req, res) => {
     })
 })
 
-router.post('/:id', (req, res) => {
+router.post('/:id', validateProjectId, (req, res) => {
   const { id } = req.params
 
   newAction = {
@@ -76,5 +77,21 @@ router.delete('/:id', (req, res) => {
     })
 
 })
+
+// custom middleware to validate project_id
+function validateProjectId(req, res, next) {
+  const { id } = req.params
+
+  projectsDb.get(id)
+    .then(project => {
+      if (!project) {
+        res.status(400).json({
+          message: 'Invalid Project ID'
+        })
+      } else {
+        next()
+      }
+    })
+}
 
 module.exports = router
