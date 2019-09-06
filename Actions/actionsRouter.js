@@ -19,4 +19,27 @@ router.get('/', (req, res) => {
     })
 })
 
+router.post('/:id', (req, res) => {
+  const { id } = req.params
+
+  newAction = {
+    project_id: id,
+    description: req.body.description,
+    notes: req.body.notes
+  }
+
+  actionsDb.insert(newAction)
+    .then(action => {
+      res.status(201).json({
+        action
+      })
+    })
+    .catch(error => {
+      console.log(error)
+      res.status(500).json({
+        error: 'There was an error saving the action to the database'
+      })
+    })
+})
+
 module.exports = router
