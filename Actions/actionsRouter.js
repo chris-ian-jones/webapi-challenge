@@ -42,4 +42,21 @@ router.post('/:id', (req, res) => {
     })
 })
 
+router.put('/:id', (req, res) => {
+  const { id } = req.params
+
+  actionsDb.update(id, req.body)
+    .then(editedAction => {
+      res.status(200).json({
+        editedAction
+      })
+    })
+    .catch(error => {
+      console.log(error)
+      res.status(500).json({
+        error: 'Could not edit action in database'
+      })
+    })
+})
+
 module.exports = router
