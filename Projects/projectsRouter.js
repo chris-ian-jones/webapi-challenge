@@ -68,4 +68,20 @@ router.put('/:id', (req, res) => {
     })
 })
 
+router.get('/:id/actions', (req, res) => {
+  const { id } = req.params
+
+  projectsDb.getProjectActions(id)
+    .then(projectActions => {
+      res.status(200).json({
+        projectActions
+      })
+    })
+    .catch(error => {
+      res.status(500).json({
+      error: 'Could not get the actions for this Project from the database'
+      })
+    })
+})
+
 module.exports = router
