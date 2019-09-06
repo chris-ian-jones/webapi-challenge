@@ -34,6 +34,23 @@ router.post('/', (req, res) => {
     })
 })
 
+router.get('/:id', (req, res) => {
+  const { id } = req.params
+
+  projectsDb.get(id)
+    .then(project => {
+      res.status(200).json({
+        project
+      })
+    })
+    .catch(error => {
+      console.log(error)
+      res.status(500).json({
+        error: 'Could not get project from the database'
+      })
+    })
+})
+
 router.delete('/:id', (req, res) => {
   const { id } = req.params
 
