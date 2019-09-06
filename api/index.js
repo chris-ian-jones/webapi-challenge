@@ -9,7 +9,6 @@ const actionsRoutes = require('./Actions/actionsRouter.js')
 
 server.use(express.json())
 
-
 server.use('/api/projects', projectsRoutes)
 server.use('/api/actions', actionsRoutes)
 
